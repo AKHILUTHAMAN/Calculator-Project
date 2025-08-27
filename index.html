@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Calculator</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Custom CSS for calculator styling */
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        .calculator-container {
+            max-width: 400px;
+            margin: 50px auto;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        
+        .display {
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            font-size: 2rem;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: right;
+            margin-bottom: 20px;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        
+        .btn-calculator {
+            height: 60px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            border-radius: 15px;
+            margin: 5px;
+            transition: all 0.3s ease;
+            border: none;
+        }
+        
+        .btn-number {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .btn-number:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            color: white;
+        }
+        
+        .btn-operator {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+            color: white;
+        }
+        
+        .btn-operator:hover {
+            background: linear-gradient(45deg, #ee5a52, #ff6b6b);
+            transform: translateY(-2px);
+            color: white;
+        }
+        
+        .btn-special {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            color: white;
+        }
+        
+        .btn-special:hover {
+            background: linear-gradient(45deg, #44a08d, #4ecdc4);
+            transform: translateY(-2px);
+            color: white;
+        }
+        
+        .btn-clear {
+            background: linear-gradient(45deg, #ffa726, #ff7043);
+            color: white;
+        }
+        
+        .btn-clear:hover {
+            background: linear-gradient(45deg, #ff7043, #ffa726);
+            transform: translateY(-2px);
+            color: white;
+        }
+        
+        .calculator-title {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="calculator-container">
+            <h2 class="calculator-title">Smart Calculator</h2>
+            
+            <!-- Display Screen -->
+            <div class="display" id="display">0</div>
+            
+            <!-- Calculator Buttons using Bootstrap Grid -->
+            <div class="row g-2">
+                <!-- First Row: AC, +/-, %, ÷ -->
+                <div class="col-3">
+                    <button class="btn btn-clear btn-calculator w-100" onclick="clearAll()">AC</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-special btn-calculator w-100" onclick="toggleSign()">+/-</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-operator btn-calculator w-100" onclick="inputOperator('%')">%</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-operator btn-calculator w-100" onclick="inputOperator('/')">÷</button>
+                </div>
+                
+                <!-- Second Row: 7, 8, 9, × -->
+                <div class="col-3">
+                    <button class="btn btn-number btn-calculator w-100" onclick="inputNumber('7')">7</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-number btn-calculator w-100" onclick="inputNumber('8')">8</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-number btn-calculator w-100" onclick="inputNumber('9')">9</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-operator btn-calculator w-100" onclick="inputOperator('*')">×</button>
+                </div>
+                
+                <!-- Third Row: 4, 5, 6, - -->
+                <div class="col-3">
+                    <button class="btn btn-number btn-calculator w-100" onclick="inputNumber('4')">4</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-number btn-calculator w-100" onclick="inputNumber('5')">5</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-number btn-calculator w-100" onclick="inputNumber('6')">6</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-operator btn-calculator w-100" onclick="inputOperator('-')">-</button>
+                </div>
+                
+                <!-- Fourth Row: 1, 2, 3, + -->
+                <div class="col-3">
+                    <button class="btn btn-number btn-calculator w-100" onclick="inputNumber('1')">1</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-number btn-calculator w-100" onclick="inputNumber('2')">2</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-number btn-calculator w-100" onclick="inputNumber('3')">3</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-operator btn-calculator w-100" onclick="inputOperator('+')">+</button>
+                </div>
+                
+                <!-- Fifth Row: 0, ., x², = -->
+                <div class="col-6">
+                    <button class="btn btn-number btn-calculator w-100" onclick="inputNumber('0')">0</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-number btn-calculator w-100" onclick="inputDecimal()">.</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-special btn-calculator w-100" onclick="calculateSquare()">x²</button>
+                </div>
+                
+                <!-- Sixth Row: Equals button spanning full width -->
+                <div class="col-12">
+                    <button class="btn btn-operator btn-calculator w-100" onclick="calculateResult()" style="background: linear-gradient(45deg, #56ab2f, #a8e6cf);">=</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables to store calculator state
+        let currentInput = '0';
+        let previousInput = '';
+        let operator = '';
+        let waitingForNewOperand = false;
+
+        // Get display element for updating screen
+        const display = document.getElementById('display');
+
+        /**
+         * Updates the calculator display with current input
+         * Handles long numbers by adjusting font size
+         */
+        function updateDisplay() {
+            display.innerHTML = currentInput;
+            
+            // Adjust font size for long numbers
+            if (currentInput.length > 10) {
+                display.style.fontSize = '1.5rem';
+            } else if (currentInput.length > 8) {
+                display.style.fontSize = '1.8rem';
+            } else {
+                display.style.fontSize = '2rem';
+            }
+        }
+
+        /**
+         * Handles number input from calculator buttons
+         * @param {string} number - The number pressed
+         */
+        function inputNumber(number) {
+            if (waitingForNewOperand) {
+                currentInput = number;
+                waitingForNewOperand = false;
+            } else {
+                currentInput = currentInput === '0' ? number : currentInput + number;
+            }
+            updateDisplay();
+        }
+
+        /**
+         * Handles decimal point input
+         * Prevents multiple decimal points in same number
+         */
+        function inputDecimal() {
+            if (waitingForNewOperand) {
+                currentInput = '0.';
+                waitingForNewOperand = false;
+            } else if (currentInput.indexOf('.') === -1) {
+                currentInput += '.';
+            }
+            updateDisplay();
+        }
+
+        /**
+         * Handles operator input (+, -, *, /, %)
+         * @param {string} nextOperator - The operator pressed
+         */
+        function inputOperator(nextOperator) {
+            const inputValue = parseFloat(currentInput);
+
+            // If we have a previous input and operator, calculate first
+            if (previousInput !== '' && operator !== '' && !waitingForNewOperand) {
+                const result = calculate();
+                currentInput = String(result);
+                updateDisplay();
+            } else {
+                previousInput = currentInput;
+            }
+
+            waitingForNewOperand = true;
+            operator = nextOperator;
+        }
+
+        /**
+         * Performs the actual calculation based on stored operator
+         * @returns {number} - The calculation result
+         */
+        function calculate() {
+            const previous = parseFloat(previousInput);
+            const current = parseFloat(currentInput);
+            let result;
+
+            // Switch statement to handle different operations
+            switch (operator) {
+                case '+':
+                    result = previous + current;
+                    break;
+                case '-':
+                    result = previous - current;
+                    break;
+                case '*':
+                    result = previous * current;
+                    break;
+                case '/':
+                    // Handle division by zero
+                    if (current === 0) {
+                        alert('Cannot divide by zero!');
+                        return previous;
+                    }
+                    result = previous / current;
+                    break;
+                case '%':
+                    result = previous % current;
+                    break;
+                default:
+                    return current;
+            }
+
+            return result;
+        }
+
+        /**
+         * Calculates and displays the final result
+         * Resets calculator state for next calculation
+         */
+        function calculateResult() {
+            if (previousInput !== '' && operator !== '' && !waitingForNewOperand) {
+                const result = calculate();
+                currentInput = String(result);
+                previousInput = '';
+                operator = '';
+                waitingForNewOperand = true;
+                updateDisplay();
+            }
+        }
+
+        /**
+         * Calculates the square of current number
+         * Uses Math.pow() for accurate calculation
+         */
+        function calculateSquare() {
+            const current = parseFloat(currentInput);
+            const result = Math.pow(current, 2);
+            currentInput = String(result);
+            waitingForNewOperand = true;
+            updateDisplay();
+        }
+
+        /**
+         * Toggles the sign of current number (positive/negative)
+         */
+        function toggleSign() {
+            if (currentInput !== '0') {
+                if (currentInput.charAt(0) === '-') {
+                    currentInput = currentInput.slice(1);
+                } else {
+                    currentInput = '-' + currentInput;
+                }
+                updateDisplay();
+            }
+        }
+
+        /**
+         * Clears all calculator data and resets to initial state
+         * AC (All Clear) functionality
+         */
+        function clearAll() {
+            currentInput = '0';
+            previousInput = '';
+            operator = '';
+            waitingForNewOperand = false;
+            updateDisplay();
+        }
+
+        /**
+         * Keyboard support for calculator
+         * Allows users to use physical keyboard for input
+         */
+        document.addEventListener('keydown', function(event) {
+            const key = event.key;
+            
+            // Handle number keys (0-9)
+            if (key >= '0' && key <= '9') {
+                inputNumber(key);
+            }
+            // Handle operator keys
+            else if (key === '+') {
+                inputOperator('+');
+            }
+            else if (key === '-') {
+                inputOperator('-');
+            }
+            else if (key === '*') {
+                inputOperator('*');
+            }
+            else if (key === '/') {
+                event.preventDefault(); // Prevent browser search
+                inputOperator('/');
+            }
+            else if (key === '%') {
+                inputOperator('%');
+            }
+            // Handle special keys
+            else if (key === '.') {
+                inputDecimal();
+            }
+            else if (key === 'Enter' || key === '=') {
+                calculateResult();
+            }
+            else if (key === 'Escape' || key.toLowerCase() === 'c') {
+                clearAll();
+            }
+        });
+
+        // Initialize display on page load
+        updateDisplay();
+    </script>
+</body>
+</html>
